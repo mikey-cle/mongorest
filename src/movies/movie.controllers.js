@@ -30,8 +30,8 @@ exports.deleteMovie = async (req, res) => {
 exports.updateWatched = async (req, res) => {
         try {
              const titleToUpdate = req.params.title;
-             const updateWatched = await Movie.updateOne(titleToUpdate, {watched: "true"});
-             res.status(200).send({Movie: updateWatched})
+             await Movie.findOneAndUpdate({title: titleToUpdate} , {watched: "true"});
+             res.status(200).send({titleToUpdate, message: "updated"})
         } catch (error) {
             res.status(500).send(error);
         }
