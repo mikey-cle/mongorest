@@ -14,17 +14,26 @@ exports.findUser = async (req, res) => {
   try {
     const username = req.params.username;
     const targetUser = await User.findOne({ username: username });
-    res.status(200).send({ title: targetUser });
+    res.status(200).send({ username: targetUser });
+    // console.log(targetUser)
   } catch (error) {
     res.status(500).send(error);
   }
   exports.deleteUser = async (req, res) => {
     try {
       const user = req.params.username;
-      const userToDelete = await User.findOneAndDelete({ username: user });
+      const userToDelete = await User.findOneAndDelete({ username: user }, (err, res)=>
+      {
+        if(err){
+          res.status(500).send(err)
+        }
+        else{
+          res.status(200).send(err)
+        }
+      });
       res.status(200).send({ username: userToDelete });
     } catch (error) {
-      res.status(200).send(error);
+      res.status(500).send(error);
     }
   }
 }
